@@ -209,13 +209,10 @@
                     btn.classList.remove('copied');
                 }, 2000);
             }).catch(() => {
-                document.execCommand('copy');
-                btn.textContent = '✅ Copied!';
-                btn.classList.add('copied');
+                btn.textContent = '❌ Failed to copy';
                 
                 setTimeout(() => {
                     btn.textContent = '📋 Copy';
-                    btn.classList.remove('copied');
                 }, 2000);
             });
         }

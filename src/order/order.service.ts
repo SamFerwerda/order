@@ -32,7 +32,10 @@ export class OrderService {
       createdAt: new Date(),
     };
 
-    this.orders.get(uuid)!.push(order);
+    const orders = this.orders.get(uuid);
+    if (orders) {
+      orders.push(order);
+    }
     return order;
   }
 
