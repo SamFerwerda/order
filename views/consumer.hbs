@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders - Consumer View</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+        .uuid-badge {
+            display: inline-block;
+            background: #f0f4f8;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .orders-list {
+            list-style: none;
+        }
+        .order-item {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 0 8px 8px 0;
+            transition: transform 0.2s;
+        }
+        .order-item:hover {
+            transform: translateX(5px);
+        }
+        .order-description {
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .order-meta {
+            font-size: 0.85rem;
+            color: #888;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #888;
+        }
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        .error-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #dc3545;
+        }
+        .refresh-hint {
+            margin-top: 30px;
+            text-align: center;
+            color: #888;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 Your Orders</h1>
+        <div class="uuid-badge">Session: {{uuid}}</div>
+
+        {{#if exists}}
+            {{#if hasOrders}}
+                <ul class="orders-list">
+                    {{#each orders}}
+                        <li class="order-item">
+                            <div class="order-description">{{this.description}}</div>
+                            <div class="order-meta">Added: {{this.createdAt}}</div>
+                        </li>
+                    {{/each}}
+                </ul>
+            {{else}}
+                <div class="empty-state">
+                    <div class="empty-state-icon">📭</div>
+                    <h2>No orders yet</h2>
+                    <p>Orders added by the provider will appear here.</p>
+                </div>
+            {{/if}}
+        {{else}}
+            <div class="error-state">
+                <div class="empty-state-icon">❌</div>
+                <h2>Session not found</h2>
+                <p>This order session does not exist or has expired.</p>
+            </div>
+        {{/if}}
+
+        <div class="refresh-hint">
+            💡 Refresh this page to see new orders
+        </div>
+    </div>
+</body>
+</html>
