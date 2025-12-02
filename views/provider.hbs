@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orders - Provider View</title>
+    <title>Dough Bros - Staff Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -11,210 +12,286 @@
             box-sizing: border-box;
         }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #fef7e0 0%, #f6e6c8 50%, #e8d5b7 100%);
             min-height: 100vh;
             padding: 20px;
+            color: #2c1810;
         }
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
-            background: white;
-            border-radius: 16px;
+            background: #ffffff;
+            border-radius: 20px;
             padding: 40px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 60px rgba(44, 24, 16, 0.2);
+            position: relative;
+            overflow: hidden;
         }
-        h1 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 2rem;
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, #8b4513 0%, #d4822a 50%, #f4a460 100%);
         }
-        .uuid-badge {
-            display: inline-block;
-            background: #f0f4f8;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-family: monospace;
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 20px;
-        }
-        .consumer-link-section {
-            background: #e8f5e9;
-            border: 2px dashed #4caf50;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 30px;
-        }
-        .consumer-link-label {
-            font-weight: 600;
-            color: #2e7d32;
-            margin-bottom: 10px;
-            display: block;
-        }
-        .consumer-link-wrapper {
-            display: flex;
-            gap: 10px;
-        }
-        .consumer-link-input {
-            flex: 1;
-            padding: 12px 16px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            background: white;
-        }
-        .copy-btn {
-            padding: 12px 24px;
-            background: #4caf50;
+        .open-display-btn-top {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #d4822a 0%, #f4a460 100%);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
             font-weight: 600;
-            transition: background 0.2s;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(212, 130, 42, 0.3);
+            z-index: 10;
         }
-        .copy-btn:hover {
-            background: #388e3c;
+        .open-display-btn-top:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(212, 130, 42, 0.4);
         }
-        .copy-btn.copied {
-            background: #2e7d32;
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
         }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.2rem;
+            font-weight: 700;
+            color: #8b4513;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(139, 69, 19, 0.1);
+        }
+        .subtitle {
+            font-size: 1.3rem;
+            color: #d4822a;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .location {
+            font-size: 1rem;
+            color: #8b6f47;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+
         .add-order-section {
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #fefbf3 0%, #faf6ed 100%);
+            border-radius: 16px;
+            padding: 30px;
+            border: 2px solid #f4e5d3;
         }
         .add-order-section h2 {
-            color: #333;
-            margin-bottom: 15px;
-            font-size: 1.3rem;
+            color: #8b4513;
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
         }
         .order-form {
             display: flex;
-            gap: 10px;
+            gap: 15px;
+            align-items: stretch;
         }
         .order-input {
             flex: 1;
-            padding: 14px 18px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.2s;
+            padding: 18px 22px;
+            border: 2px solid #e8d5b7;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            background: #ffffff;
         }
         .order-input:focus {
             outline: none;
-            border-color: #11998e;
+            border-color: #d4822a;
+            box-shadow: 0 0 0 3px rgba(212, 130, 42, 0.1);
+        }
+        .order-input::placeholder {
+            color: #8b6f47;
+            font-style: italic;
         }
         .submit-btn {
-            padding: 14px 28px;
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            padding: 18px 32px;
+            background: linear-gradient(135deg, #8b4513 0%, #d4822a 100%);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(139, 69, 19, 0.3);
         }
         .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(17, 153, 142, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(139, 69, 19, 0.4);
+        }
+        .orders-section {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 30px;
+            border: 2px solid #f4e5d3;
         }
         .orders-section h2 {
-            color: #333;
-            margin-bottom: 15px;
-            font-size: 1.3rem;
+            color: #8b4513;
+            margin-bottom: 25px;
+            font-size: 1.6rem;
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .orders-count {
+            background: linear-gradient(135deg, #d4822a, #f4a460);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
         }
         .orders-list {
             list-style: none;
         }
         .order-item {
-            background: #f8f9fa;
-            border-left: 4px solid #11998e;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-radius: 0 8px 8px 0;
+            background: linear-gradient(135deg, #fefbf3 0%, #faf6ed 100%);
+            border: 2px solid #f4e5d3;
+            border-left: 6px solid #d4822a;
+            padding: 25px;
+            margin-bottom: 18px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+        .order-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(139, 69, 19, 0.15);
+            border-color: #d4822a;
+        }
+        .order-content {
+            flex: 1;
+            padding-right: 60px;
         }
         .order-description {
-            font-size: 1.1rem;
-            color: #333;
-            margin-bottom: 8px;
+            font-size: 1.3rem;
+            color: #2c1810;
+            margin-bottom: 12px;
+            font-weight: 600;
+            line-height: 1.4;
         }
         .order-meta {
-            font-size: 0.85rem;
-            color: #888;
+            font-size: 0.95rem;
+            color: #8b6f47;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .complete-form {
+            margin: 0;
+        }
+        .complete-btn {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(40, 167, 69, 0.3);
+            white-space: nowrap;
+        }
+        .complete-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(40, 167, 69, 0.4);
+            background: linear-gradient(135deg, #218838 0%, #1e7e34 100%);
         }
         .empty-state {
             text-align: center;
-            padding: 40px 20px;
-            color: #888;
-            background: #f8f9fa;
-            border-radius: 12px;
+            padding: 60px 20px;
+            color: #8b6f47;
+            background: linear-gradient(135deg, #fefbf3 0%, #faf6ed 100%);
+            border-radius: 16px;
+            border: 2px dashed #f4e5d3;
+        }
+        .empty-state p {
+            font-size: 1.1rem;
+            font-style: italic;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📦 Provider Dashboard</h1>
-        <div class="uuid-badge">Session: {{uuid}}</div>
-
-        <div class="consumer-link-section">
-            <label class="consumer-link-label">🔗 Share this link with your consumer:</label>
-            <div class="consumer-link-wrapper">
-                <input type="text" class="consumer-link-input" value="{{consumerLink}}" readonly id="consumerLink">
-                <button class="copy-btn" onclick="copyLink()" id="copyBtn">📋 Copy</button>
+        <button class="open-display-btn-top" onclick="openDisplay()" title="Open Customer Display">
+            🔗 Display
+        </button>
+        
+        <div class="header">
+            <div class="logo">Dough Bros</div>
+            <div class="subtitle">Staff Dashboard</div>
+            <div class="location">
+                📍 Central, Hong Kong • Fresh Daily Since 2019
             </div>
         </div>
 
         <div class="add-order-section">
-            <h2>➕ Add New Order</h2>
+            <h2>🥖 Add Fresh Item</h2>
             <form class="order-form" action="/provider/{{uuid}}/orders" method="POST">
-                <input type="text" name="description" class="order-input" placeholder="Enter order description..." required>
-                <button type="submit" class="submit-btn">Add Order</button>
+                <input type="text" name="description" class="order-input" placeholder="e.g., Sourdough Bread, Croissant, Hong Kong Pineapple Bun..." required>
+                <button type="submit" class="submit-btn">Add Item</button>
             </form>
         </div>
 
         <div class="orders-section">
-            <h2>📋 Current Orders ({{orders.length}})</h2>
+            <h2>🥖 Current Items <span class="orders-count">{{orders.length}}</span></h2>
             {{#if hasOrders}}
                 <ul class="orders-list">
                     {{#each orders}}
                         <li class="order-item">
-                            <div class="order-description">{{this.description}}</div>
-                            <div class="order-meta">Added: {{this.createdAt}}</div>
+                            <div class="order-content">
+                                <div class="order-description">{{this.description}}</div>
+                                <div class="order-meta">
+                                    Added at {{this.createdAt}}
+                                </div>
+                            </div>
+                            <form class="complete-form" action="/provider/{{../uuid}}/orders/{{this.id}}/complete" method="POST">
+                                <button type="submit" class="complete-btn" title="Mark as completed and remove from display">
+                                    Complete
+                                </button>
+                            </form>
                         </li>
                     {{/each}}
                 </ul>
             {{else}}
                 <div class="empty-state">
-                    <p>No orders yet. Add your first order above!</p>
+                    <p>🍞 No items in the order yet. Start adding fresh bakery items above!</p>
                 </div>
             {{/if}}
         </div>
     </div>
 
     <script>
-        function copyLink() {
-            const input = document.getElementById('consumerLink');
-            const btn = document.getElementById('copyBtn');
-            
-            input.select();
-            input.setSelectionRange(0, 99999);
-            
-            navigator.clipboard.writeText(input.value).then(() => {
-                btn.textContent = '✅ Copied!';
-                btn.classList.add('copied');
-                
-                setTimeout(() => {
-                    btn.textContent = '📋 Copy';
-                    btn.classList.remove('copied');
-                }, 2000);
-            }).catch(() => {
-                btn.textContent = '❌ Failed to copy';
-                
-                setTimeout(() => {
-                    btn.textContent = '📋 Copy';
-                }, 2000);
-            });
+        function openDisplay() {
+            const consumerLink = '{{consumerLink}}';
+            window.open(consumerLink, '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
         }
     </script>
 </body>

@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orders - Consumer View</title>
+    <title>Dough Bros - Your Order</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -11,112 +12,370 @@
             box-sizing: border-box;
         }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #fef7e0 0%, #f6e6c8 50%, #e8d5b7 100%);
             min-height: 100vh;
             padding: 20px;
+            color: #2c1810;
         }
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
-            background: white;
-            border-radius: 16px;
+            background: #ffffff;
+            border-radius: 20px;
             padding: 40px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 60px rgba(139, 69, 19, 0.1);
+            position: relative;
+            overflow: hidden;
         }
-        h1 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 2rem;
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #d4822a 0%, #f4a460 50%, #daa520 100%);
         }
-        .uuid-badge {
-            display: inline-block;
-            background: #f0f4f8;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-family: monospace;
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 30px;
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: #8b4513;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(139, 69, 19, 0.1);
+        }
+        .tagline {
+            font-size: 1.1rem;
+            color: #d4822a;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+        .location {
+            font-size: 0.95rem;
+            color: #8b6f47;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .orders-section {
+            margin-top: 30px;
+        }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: #8b4513;
+            margin-bottom: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            text-align: center;
         }
         .orders-list {
             list-style: none;
         }
         .order-item {
-            background: #f8f9fa;
-            border-left: 4px solid #667eea;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-radius: 0 8px 8px 0;
-            transition: transform 0.2s;
+            background: linear-gradient(135deg, #fefbf3 0%, #faf6ed 100%);
+            border: 3px solid #f4e5d3;
+            border-left: 8px solid #d4822a;
+            padding: 35px 40px;
+            margin-bottom: 25px;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.1);
         }
         .order-item:hover {
-            transform: translateX(5px);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(139, 69, 19, 0.2);
+            border-color: #d4822a;
+        }
+        .order-item::before {
+            content: '🍕';
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            font-size: 2rem;
+            opacity: 0.7;
         }
         .order-description {
-            font-size: 1.1rem;
-            color: #333;
-            margin-bottom: 8px;
-        }
-        .order-meta {
-            font-size: 0.85rem;
-            color: #888;
+            font-size: 1.6rem;
+            color: #2c1810;
+            font-weight: 600;
+            line-height: 1.4;
+            padding-right: 60px;
+            text-align: left;
         }
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
-            color: #888;
+            padding: 100px 40px;
+            color: #8b6f47;
+            background: linear-gradient(135deg, #fefbf3 0%, #faf6ed 100%);
+            border-radius: 20px;
+            border: 3px dashed #f4e5d3;
         }
         .empty-state-icon {
-            font-size: 4rem;
+            font-size: 6rem;
+            margin-bottom: 30px;
+            opacity: 0.8;
+        }
+        .empty-state h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: #8b4513;
             margin-bottom: 20px;
+        }
+        .empty-state p {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            font-style: italic;
         }
         .error-state {
             text-align: center;
-            padding: 60px 20px;
+            padding: 80px 20px;
             color: #dc3545;
+            background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+            border-radius: 16px;
+            border: 2px solid #fca5a5;
+        }
+        .error-state h2 {
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 15px;
         }
         .refresh-hint {
-            margin-top: 30px;
+            margin-top: 40px;
             text-align: center;
-            color: #888;
-            font-size: 0.9rem;
+            color: #8b6f47;
+            font-size: 1rem;
+            padding: 20px;
+            background: linear-gradient(135deg, #fef7e0 0%, #f6e6c8 100%);
+            border-radius: 12px;
+            border: 1px solid #f4e5d3;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📋 Your Orders</h1>
-        <div class="uuid-badge">Session: {{uuid}}</div>
+        <div class="header">
+            <div class="logo">Dough Bros</div>
+            <div class="tagline">Freshly Baked • Handcrafted • Daily</div>
+            <div class="location">
+                📍 Central, Hong Kong
+            </div>
+        </div>
 
         {{#if exists}}
-            {{#if hasOrders}}
-                <ul class="orders-list">
-                    {{#each orders}}
-                        <li class="order-item">
-                            <div class="order-description">{{this.description}}</div>
-                            <div class="order-meta">Added: {{this.createdAt}}</div>
-                        </li>
-                    {{/each}}
-                </ul>
-            {{else}}
-                <div class="empty-state">
-                    <div class="empty-state-icon">📭</div>
-                    <h2>No orders yet</h2>
-                    <p>Orders added by the provider will appear here.</p>
-                </div>
-            {{/if}}
+            <div class="orders-section">
+                <h2 class="section-title">🍕 Fresh from the Oven</h2>
+                {{#if hasOrders}}
+                    <ul class="orders-list">
+                        {{#each orders}}
+                            <li class="order-item" data-order-id="{{this.id}}">
+                                <div class="order-description">{{this.description}}</div>
+                            </li>
+                        {{/each}}
+                    </ul>
+                {{else}}
+                    <div class="empty-state">
+                        <h2>Getting ready...</h2>
+                        <p>Fresh items will appear here as they're prepared</p>
+                    </div>
+                {{/if}}
+            </div>
         {{else}}
             <div class="error-state">
                 <div class="empty-state-icon">❌</div>
-                <h2>Session not found</h2>
-                <p>This order session does not exist or has expired.</p>
+                <h2>Display Not Available</h2>
+                <p>Please check with our staff to set up the order display.</p>
             </div>
         {{/if}}
-
-        <div class="refresh-hint">
-            💡 Refresh this page to see new orders
-        </div>
     </div>
+
+    <script>
+        let currentOrderIds = new Set();
+        let isInitialLoad = true;
+        
+        // Initialize current orders on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get current order IDs from the page
+            const orderItems = document.querySelectorAll('.order-item');
+            orderItems.forEach(item => {
+                const orderId = item.getAttribute('data-order-id');
+                if (orderId) {
+                    currentOrderIds.add(orderId);
+                }
+            });
+            isInitialLoad = false;
+            
+            // Check for new orders every 1.5 seconds
+            setInterval(checkForNewOrders, 1500);
+        });
+
+        function checkForNewOrders() {
+            const uuid = '{{uuid}}';
+            
+            fetch(`/view/${uuid}/api/orders`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.exists) {
+                        updateOrdersList(data.orders, data.hasOrders);
+                    } else {
+                        // Session no longer exists, show error
+                        showErrorState();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching orders:', error);
+                });
+        }
+
+        function updateOrdersList(orders, hasOrders) {
+            const ordersSection = document.querySelector('.orders-section');
+            let ordersList = document.querySelector('.orders-list');
+            const newOrderIds = new Set(orders.map(order => order.id));
+            
+            // Check if orders have changed
+            const ordersChanged = !setsEqual(currentOrderIds, newOrderIds);
+            
+            if (!ordersChanged) {
+                return; // No changes, exit early
+            }
+
+            // Handle empty state
+            if (!hasOrders) {
+                ordersSection.innerHTML = `
+                    <h2 class="section-title">🍕 Fresh from the Oven</h2>
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🍕</div>
+                        <h2>Getting ready...</h2>
+                        <p>Fresh items will appear here as they're prepared</p>
+                    </div>
+                `;
+                currentOrderIds = newOrderIds;
+                return;
+            }
+
+            // If no orders list exists, create it
+            if (!ordersList) {
+                ordersSection.innerHTML = `
+                    <h2 class="section-title">🍕 Fresh from the Oven</h2>
+                    <ul class="orders-list"></ul>
+                `;
+                ordersList = document.querySelector('.orders-list');
+            }
+
+            // Find added and removed orders
+            const addedOrderIds = [...newOrderIds].filter(id => !currentOrderIds.has(id));
+            const removedOrderIds = [...currentOrderIds].filter(id => !newOrderIds.has(id));
+
+            // Remove orders that are no longer present
+            removedOrderIds.forEach(orderId => {
+                const orderElement = ordersList.querySelector(`[data-order-id="${orderId}"]`);
+                if (orderElement) {
+                    // Animate removal
+                    orderElement.style.transition = 'all 0.5s ease';
+                    orderElement.style.opacity = '0';
+                    orderElement.style.transform = 'translateX(-100%)';
+                    setTimeout(() => {
+                        if (orderElement.parentNode) {
+                            orderElement.remove();
+                        }
+                    }, 500);
+                }
+            });
+
+            // Add new orders
+            addedOrderIds.forEach(orderId => {
+                const order = orders.find(o => o.id === orderId);
+                if (order) {
+                    // Create new order element
+                    const orderElement = document.createElement('li');
+                    orderElement.className = 'order-item';
+                    orderElement.setAttribute('data-order-id', order.id);
+                    orderElement.innerHTML = `
+                        <div class="order-description">${escapeHtml(order.description)}</div>
+                    `;
+
+                    // Find correct position to insert (maintain order from API)
+                    const orderIndex = orders.findIndex(o => o.id === orderId);
+                    const existingItems = ordersList.querySelectorAll('.order-item');
+                    
+                    // Insert at correct position
+                    if (orderIndex === 0 || existingItems.length === 0) {
+                        ordersList.insertBefore(orderElement, ordersList.firstChild);
+                    } else if (orderIndex >= orders.length - 1) {
+                        ordersList.appendChild(orderElement);
+                    } else {
+                        // Find the item that should come after this one
+                        let insertAfter = null;
+                        for (let i = orderIndex - 1; i >= 0; i--) {
+                            const prevOrder = orders[i];
+                            const prevElement = ordersList.querySelector(`[data-order-id="${prevOrder.id}"]`);
+                            if (prevElement) {
+                                insertAfter = prevElement;
+                                break;
+                            }
+                        }
+                        
+                        if (insertAfter) {
+                            insertAfter.insertAdjacentElement('afterend', orderElement);
+                        } else {
+                            ordersList.appendChild(orderElement);
+                        }
+                    }
+
+                    // Animate entrance only if not initial load
+                    if (!isInitialLoad) {
+                        orderElement.style.opacity = '0';
+                        orderElement.style.transform = 'translateY(20px)';
+                        orderElement.style.transition = 'none';
+                        
+                        // Trigger animation after a brief delay
+                        setTimeout(() => {
+                            orderElement.style.transition = 'all 0.5s ease';
+                            orderElement.style.opacity = '1';
+                            orderElement.style.transform = 'translateY(0)';
+                        }, 50);
+                    }
+                }
+            });
+
+            currentOrderIds = newOrderIds;
+        }
+
+        function showErrorState() {
+            const container = document.querySelector('.container');
+            container.innerHTML = `
+                <div class="header">
+                    <div class="logo">Dough Bros</div>
+                    <div class="tagline">Freshly Baked • Handcrafted • Daily</div>
+                    <div class="location">📍 Central, Hong Kong</div>
+                </div>
+                <div class="error-state">
+                    <div class="empty-state-icon">❌</div>
+                    <h2>Display Not Available</h2>
+                    <p>Please check with our staff to set up the order display.</p>
+                </div>
+            `;
+        }
+
+        function setsEqual(a, b) {
+            return a.size === b.size && [...a].every(value => b.has(value));
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
 </body>
 </html>

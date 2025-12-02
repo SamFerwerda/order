@@ -58,4 +58,14 @@ export class ProviderController {
     this.orderService.addOrder(uuid, description);
     res.redirect(`/provider/${uuid}`);
   }
+
+  @Post(':uuid/orders/:orderId/complete')
+  completeOrder(
+    @Param('uuid') uuid: string,
+    @Param('orderId') orderId: string,
+    @Res() res: Response,
+  ) {
+    this.orderService.completeOrder(uuid, orderId);
+    res.redirect(`/provider/${uuid}`);
+  }
 }

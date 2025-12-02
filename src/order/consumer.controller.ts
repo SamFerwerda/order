@@ -18,4 +18,16 @@ export class ConsumerController {
       hasOrders: orders.length > 0,
     };
   }
+
+  @Get(':uuid/api/orders')
+  getOrdersJson(@Param('uuid') uuid: string) {
+    const orders = this.orderService.getOrders(uuid);
+    const exists = this.orderService.sessionExists(uuid);
+
+    return {
+      orders,
+      exists,
+      hasOrders: orders.length > 0,
+    };
+  }
 }
